@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, select, textarea {
+            margin-bottom: 10px;
+        }
+        .error {
+            color: red;
+        }
+        input[type="radio"] {
+            display: inline-block;
+            margin-right: 10px; /* Adjust the margin as needed for spacing */
+        }
+
+        label[for="male"], label[for="female"] {
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <h1>Date and Time: <span id="dateTime"></span></h1>
+    <form id="projectForm">
+        <label for="name">Name of Item:</label>
+        <input type="text" id="name" name="name">
+
+        <label for="contact">Your phone number:</label>
+        <input type="text" id="contact" name="contact">
+
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age">
+
+        <label for="quantity">Item Quantity:</label>
+        <input type="number" id="quantity" name="quantity">
+
+        <label>Gender:</label>
+        <input type="radio" id="male" name="gender" value="Male">
+        <label for="male">Male</label>
+        <input type="radio" id="female" name="gender" value="Female">
+        <label for="female">Female</label>
+
+        <label>Hobbies:</label>
+        <input type="checkbox" id="reading" name="hobbies" value="Reading">
+        <label for="reading">Reading</label>
+        <input type="checkbox" id="traveling" name="hobbies" value="Traveling">
+        <label for="traveling">Traveling</label>
+
+        <label for="comments">Comments:</label>
+        <textarea id="comments" name="comments" rows="4"></textarea>
+
+        <input type="button" value="Submit" onclick="validateForm()">
+    </form>
+
+    <div id="errorMessages"></div>
+
+    <h2>Report:</h2>
+    <textarea id="report" rows="6" readonly></textarea>
+
+    <script>
+        function updateDateTime() {
+            const dateTimeElement = document.getElementById('dateTime');
+            const now = new Date();
+            const formattedDateTime = now.toLocaleString();
+            dateTimeElement.textContent = formattedDateTime;
+        }
+
+        function validateForm() {
+            document.getElementById('errorMessages').innerHTML = '';
+
+            // Validate each field
+            const name = document.getElementById('name').value;
+            const contact = document.getElementById('contact').value;
+            const age = document.getElementById('age').value;
+            const quantity = document.getElementById('quantity').value;
+            const income = document.getElementById('income').value;
+            const gender = document.querySelector('input[name="gender"]:checked');
+            const hobbies = document.querySelectorAll('input[name="hobbies"]:checked');
+            const comments = document.getElementById('comments').value;
+
+            if (name.trim() === '') {
+                displayError('Name is required');
+                return;
+            }
+            if (document.getElementById("age").value < 18) {
+                alert("Age must be 18 or older.");
+                return;
+            }
+            
+            // Implement other validation criteria as needed
+
+            // If all validation passes, perform calculations and display report
+            displayReport();
+        }
+
+        function displayError(message) {
+            const errorDiv = document.getElementById('errorMessages');
+            const errorMessage = document.createElement('div');
+            errorMessage.className = 'error';
+            errorMessage.textContent = message;
+            errorDiv.appendChild(errorMessage);
+        }
+
+        // Display Report
+        function displayReport() {
+            // Get values from form fields
+            const name = document.getElementById('name').value;
+            const contact = document.getElementById('contact').value;
+            const age = document.getElementById('age').value;
+            const quantity = document.getElementById('quantity').value;
+            const income = document.getElementById('income').value;
+            const gender = document.querySelector('input[name="gender"]:checked');
+            const hobbies = document.querySelectorAll('input[name="hobbies"]:checked');
+            const comments = document.getElementById('comments').value;
+
+            // Perform calculations based on the project's concept
+
+            // Display values in the report textarea
+            const reportTextarea = document.getElementById('report');
+            reportTextarea.value = `
+                Name: ${name}
+                Contact: ${contact}
+                Age: ${age}
+                Item Quantity: ${quantity}
+                Income: ${income}
+                Gender: ${gender ? gender.value : ''}
+                Hobbies: ${Array.from(hobbies).map(hobby => hobby.value).join(', ')}
+                Comments: ${comments}
+            `;
+        }
+
+        updateDateTime();
+
+        // Update every second
+        setInterval(updateDateTime, 1000);
+    </script>
+</body>
+</html>
